@@ -63,6 +63,47 @@ DroidMemory DroidMemory::operator+(size_t const other) const
     return dm;
 }
 
+bool DroidMemory::operator==(DroidMemory const& other) const
+{
+    return ((_exp == other._exp) && (_fingerPrint == other._fingerPrint));
+}
+bool DroidMemory::operator!=(DroidMemory const& other) const
+{
+    return ((_exp != other._exp) || (_fingerPrint != other._fingerPrint));
+}
+bool DroidMemory::operator>(DroidMemory const& other) const
+{
+    return (_exp > other._exp);
+}
+bool DroidMemory::operator>(size_t const& other) const
+{
+    return (_exp > other);
+}
+bool DroidMemory::operator>=(DroidMemory const& other) const
+{
+    return (_exp >= other._exp);
+}
+bool DroidMemory::operator>=(size_t const& other) const
+{
+    return (_exp >= other);
+}
+bool DroidMemory::operator<(DroidMemory const& other) const
+{
+    return (_exp < other._exp);
+}
+bool DroidMemory::operator<(size_t const& other) const
+{
+    return (_exp < other);
+}
+bool DroidMemory::operator<=(DroidMemory const& other) const
+{
+    return (_exp <= other._exp);
+}
+bool DroidMemory::operator<=(size_t const& other) const
+{
+    return (_exp <= other);
+}
+
 std::ostream& operator<<(std::ostream& os, DroidMemory const& droid)
 {
     std::cout << "DroidMemory '" << droid.getFingerPrint() << "', " << droid.getExp();

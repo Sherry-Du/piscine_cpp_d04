@@ -24,13 +24,14 @@ class Droid
 	std::string* getStatus() const;
 	void setStatus(std::string* status);
 
-	void setDroidMemory(DroidMemory* dm);
-	DroidMemory* getDroidMemory() const;
+	void setBattleData(DroidMemory* dm);
+	DroidMemory* getBattleData() const;
 
 	bool operator==(Droid const& other) const;	
 	bool operator!=(Droid const& other) const;
 	Droid& operator=(Droid const& droid);
 	Droid& operator<<(size_t& other);
+	Droid& operator=(Droid const& droid);
     private:
 	std::string _serial;
 	size_t _energy;

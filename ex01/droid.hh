@@ -24,8 +24,8 @@ class Droid
 	std::string* getStatus() const;
 	void setStatus(std::string* status);
 
-	void setDroidMemory(DroidMemory* dm);
-	DroidMemory* getDroidMemory() const;
+	void setBattleData(DroidMemory* dm);
+	DroidMemory* getBattleData() const;
 
 	bool operator==(Droid const& other) const;	
 	bool operator!=(Droid const& other) const;

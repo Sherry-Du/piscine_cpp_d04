@@ -20,6 +20,17 @@ class DroidMemory
 	DroidMemory& operator+=(size_t const other);
 	DroidMemory operator+(DroidMemory const& other) const;
 	DroidMemory operator+(size_t const other) const;
+
+	bool operator==(DroidMemory const& other) const;
+	bool operator!=(DroidMemory const& other) const;
+	bool operator>(DroidMemory const& other) const;
+	bool operator>(size_t const& other) const;
+	bool operator>=(DroidMemory const& other) const;
+	bool operator>=(size_t const& other) const;
+	bool operator<(DroidMemory const& other) const;
+	bool operator<(size_t const& other) const;
+	bool operator<=(DroidMemory const& other) const;
+	bool operator<=(size_t const& other) const;
     private:
 	size_t _fingerPrint;
 	size_t _exp;

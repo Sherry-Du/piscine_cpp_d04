@@ -1,7 +1,7 @@
 #include "droid.hh"
 #include "droidmemory.hh"
 
-Droid::Droid(std::string serial):_serial(serial), _energy(50), _attack(25), _toughness(15), _status(new std::string("Standing by")), _battleData(new DroidMemory)
+Droid::Droid(std::string serial):_serial(serial), _energy(50), _attack(25), _toughness(15), _status(new std::string("Standing by")), _battleData(new DroidMemory())
 {
     std::cout << "Droid '" << _serial << "' Activated" << std::endl;
 }
@@ -13,7 +13,7 @@ Droid::~Droid()
     std::cout << "Droid '" << _serial << "' Destroyed" << std::endl;
 }
 
-Droid::Droid(Droid const& droid):_serial(droid._serial), _energy(droid._energy), _attack(droid._attack), _toughness(droid._toughness), _status(new std::string(*(droid._status))), _battleData(new DroidMemory)
+Droid::Droid(Droid const& droid):_serial(droid._serial), _energy(50), _attack(25), _toughness(15), _status(new std::string(*(droid._status))), _battleData(new DroidMemory(*(droid._battleData)))
 {
     std::cout << "Droid '" << _serial << "' Activated, Memory Dumped" << std::endl;
 }
@@ -37,8 +37,6 @@ void Droid::setEnergy(size_t energy)
 {
     if(energy > 100)
 	energy = 100;
-    if(energy < 0)
-	energy = 0;
     this->_energy = energy;
 }
 
@@ -87,7 +85,7 @@ Droid& Droid::operator=(Droid const& droid)
         this->_serial = droid._serial;
 	if(_battleData)
 	    delete _battleData;
-	_battleData = new DroidMemory(*(droid.getDroidMemory()));
+	_battleData = new DroidMemory(*(droid.getBattleData()));
     }
     return *this;
 }
@@ -108,11 +106,11 @@ Droid& Droid::operator<<(size_t& other)
     return *this;
 }
 
-void Droid::setDroidMemory(DroidMemory* dm)
+void Droid::setBattleData(DroidMemory* dm)
 {
     this->_battleData = dm;
 }
-DroidMemory* Droid::getDroidMemory() const
+DroidMemory* Droid::getBattleData() const
 {
     return this->_battleData;
 }
@@ -122,6 +120,42 @@ std::ostream& operator<<(std::ostream& os, Droid const& droid)
     std::cout << "Droid '" << droid.getId() << "', " << *(droid.getStatus()) << ", " << droid.getEnergy();
     return (os);
 }
+
+int main()
+{
+ DroidMemory dm;
+ DroidMemory dn;
+ DroidMemory dg;
+ dm += 42;
+ DroidMemory dn1 = dm;
+ std::cout << dm << std::endl;
+ dn << dm;
+ dn >> dm;
+ dn << dm;
+ std::cout << dn << std::endl;
+ std::cout << dm << std::endl;
+ dg = dm + dn1;
+
+ Droid d("rudolf");
+ Droid d2("gaston");
+ size_t DuraSell = 40;
+ d << DuraSell;
+ d.setStatus(new std::string("having some reset"));
+ d2.setStatus(new std::string("having some reset"));
+ if (d2 != d && !(d == d2))
+ std::cout << "a droid is a droid, all its matter is what it’s doing"<<
+ std::endl;
+ d(new std::string("take a coffee"), 20);
+ std::cout << d << std::endl;
+ while (d(new std::string("Patrol around"), 20))
+{
+ if (!d(new std::string("Shoot some ennemies"), 50))
+ d(new std::string("Run Away"), 20);
+ std::cout << d << std::endl;
+ }
+ std::cout << d << std::endl;
+ return (0);
+ }
 
 
 

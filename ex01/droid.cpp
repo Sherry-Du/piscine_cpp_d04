@@ -1,7 +1,7 @@
 #include "droid.hh"
 #include "droidmemory.hh"
 
-Droid::Droid(std::string serial):_serial(serial), _energy(50), _attack(25), _toughness(15), _status(new std::string("Standing by")), _battleData(new DroidMemory)
+Droid::Droid(std::string serial):_serial(serial), _energy(50), _attack(25), _toughness(15), _status(new std::string("Standing by")), _battleData(new DroidMemory())
 {
     std::cout << "Droid '" << _serial << "' Activated" << std::endl;
 }
@@ -13,7 +13,7 @@ Droid::~Droid()
     std::cout << "Droid '" << _serial << "' Destroyed" << std::endl;
 }
 
-Droid::Droid(Droid const& droid):_serial(droid._serial), _energy(droid._energy), _attack(droid._attack), _toughness(droid._toughness), _status(new std::string(*(droid._status))), _battleData(new DroidMemory)
+Droid::Droid(Droid const& droid):_serial(droid._serial), _energy(droid._energy), _attack(droid._attack), _toughness(droid._toughness), _status(new std::string(*(droid._status))), _battleData(new DroidMemory(*(droid._battleData)))
 {
     std::cout << "Droid '" << _serial << "' Activated, Memory Dumped" << std::endl;
 }
@@ -37,8 +37,6 @@ void Droid::setEnergy(size_t energy)
 {
     if(energy > 100)
 	energy = 100;
-    if(energy < 0)
-	energy = 0;
     this->_energy = energy;
 }
 
@@ -87,7 +85,7 @@ Droid& Droid::operator=(Droid const& droid)
         this->_serial = droid._serial;
 	if(_battleData)
 	    delete _battleData;
-	_battleData = new DroidMemory(*(droid.getDroidMemory()));
+	_battleData = new DroidMemory(*(droid.getBattleData()));
     }
     return *this;
 }
@@ -108,11 +106,11 @@ Droid& Droid::operator<<(size_t& other)
     return *this;
 }
 
-void Droid::setDroidMemory(DroidMemory* dm)
+void Droid::setBattleData(DroidMemory* dm)
 {
     this->_battleData = dm;
 }
-DroidMemory* Droid::getDroidMemory() const
+DroidMemory* Droid::getBattleData() const
 {
     return this->_battleData;
 }
