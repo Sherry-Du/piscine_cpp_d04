@@ -31,7 +31,7 @@ class Droid
 	bool operator!=(Droid const& other) const;
 	Droid& operator=(Droid const& droid);
 	Droid& operator<<(size_t& other);
-	Droid& operator=(Droid const& droid);
+	bool operator()(std::string const* task, size_t exp);
     private:
 	std::string _serial;
 	size_t _energy;

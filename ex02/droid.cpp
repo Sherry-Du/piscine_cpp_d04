@@ -106,6 +106,34 @@ Droid& Droid::operator<<(size_t& other)
     return *this;
 }
 
+bool Droid::operator()(std::string const* task, size_t exp)
+{
+    std::string *tmp = new std::string(*task);
+    if(this->_energy - 10 > 0) 
+    {
+	this->_energy -= 10;
+	if (this->getBattleData()->getExp() >= exp) {
+	    this->_battleData->setExp(this->_battleData->getExp() + exp / 2);
+	    *tmp += " - Completed!";
+	    this->_status = new std::string(*tmp);
+	    return true;
+	}
+	else
+	{
+	    *tmp += " - Failed!";
+	    this->_status = new std::string(*tmp);
+	    this->_battleData->setExp(this->_battleData->getExp() + exp);
+	    return false;
+        }
+    }
+    else
+    {
+	this->_energy = 0;
+	this->_status = new std::string("Battery Low");
+	return false;
+    }
+}
+
 void Droid::setBattleData(DroidMemory* dm)
 {
     this->_battleData = dm;
@@ -118,44 +146,7 @@ DroidMemory* Droid::getBattleData() const
 std::ostream& operator<<(std::ostream& os, Droid const& droid)
 {
     std::cout << "Droid '" << droid.getId() << "', " << *(droid.getStatus()) << ", " << droid.getEnergy();
-    return (os);
+    return os;
 }
-
-int main()
-{
- DroidMemory dm;
- DroidMemory dn;
- DroidMemory dg;
- dm += 42;
- DroidMemory dn1 = dm;
- std::cout << dm << std::endl;
- dn << dm;
- dn >> dm;
- dn << dm;
- std::cout << dn << std::endl;
- std::cout << dm << std::endl;
- dg = dm + dn1;
-
- Droid d("rudolf");
- Droid d2("gaston");
- size_t DuraSell = 40;
- d << DuraSell;
- d.setStatus(new std::string("having some reset"));
- d2.setStatus(new std::string("having some reset"));
- if (d2 != d && !(d == d2))
- std::cout << "a droid is a droid, all its matter is what it’s doing"<<
- std::endl;
- d(new std::string("take a coffee"), 20);
- std::cout << d << std::endl;
- while (d(new std::string("Patrol around"), 20))
-{
- if (!d(new std::string("Shoot some ennemies"), 50))
- d(new std::string("Run Away"), 20);
- std::cout << d << std::endl;
- }
- std::cout << d << std::endl;
- return (0);
- }
-
 
 
