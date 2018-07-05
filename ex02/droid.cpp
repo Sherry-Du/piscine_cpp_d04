@@ -1,6 +1,7 @@
 #include "droid.hh"
+#include "droidmemory.hh"
 
-Droid::Droid(std::string serial):_serial(serial), _energy(50), _attack(25), _toughness(15), _status(new std::string("Standing by"))
+Droid::Droid(std::string serial):_serial(serial), _energy(50), _attack(25), _toughness(15), _status(new std::string("Standing by")), _battleData(new DroidMemory)
 {
     std::cout << "Droid '" << _serial << "' Activated" << std::endl;
 }
@@ -12,7 +13,7 @@ Droid::~Droid()
     std::cout << "Droid '" << _serial << "' Destroyed" << std::endl;
 }
 
-Droid::Droid(Droid const& droid):_serial(droid._serial), _energy(droid._energy), _attack(droid._attack), _toughness(droid._toughness), _status(new std::string(*(droid._status)))
+Droid::Droid(Droid const& droid):_serial(droid._serial), _energy(droid._energy), _attack(droid._attack), _toughness(droid._toughness), _status(new std::string(*(droid._status))), _battleData(new DroidMemory)
 {
     std::cout << "Droid '" << _serial << "' Activated, Memory Dumped" << std::endl;
 }
@@ -36,6 +37,8 @@ void Droid::setEnergy(size_t energy)
 {
     if(energy > 100)
 	energy = 100;
+    if(energy < 0)
+	energy = 0;
     this->_energy = energy;
 }
 
@@ -63,15 +66,13 @@ void Droid::setStatus(std::string* status)
 
 bool Droid::operator==(Droid const& other) const
 {
-    bool isEqual = ((_serial == other._serial) && (_energy == other._energy) && (_attack == other._attack) 
-	&& (_toughness == other._toughness) && (*_status == *(other._status)));
+    bool isEqual = (*_status == *(other._status));
     return isEqual;
 }
 	
 bool Droid::operator!=(Droid const& other) const
 {
-    bool notEqual = ((_serial != other._serial) || (_energy != other._energy) || (_attack != other._attack) 
-	|| (_toughness != other._toughness) || (*_status != *(other._status)));
+    bool notEqual = (*_status != *(other._status));
     return notEqual;
 }
 
@@ -84,6 +85,9 @@ Droid& Droid::operator=(Droid const& droid)
         this->_status = new std::string(*(droid._status));
         this->_energy = droid._energy;
         this->_serial = droid._serial;
+	if(_battleData)
+	    delete _battleData;
+	_battleData = new DroidMemory(*(droid.getDroidMemory()));
     }
     return *this;
 }
@@ -104,10 +108,20 @@ Droid& Droid::operator<<(size_t& other)
     return *this;
 }
 
+void Droid::setDroidMemory(DroidMemory* dm)
+{
+    this->_battleData = dm;
+}
+DroidMemory* Droid::getDroidMemory() const
+{
+    return this->_battleData;
+}
+
 std::ostream& operator<<(std::ostream& os, Droid const& droid)
 {
     std::cout << "Droid '" << droid.getId() << "', " << *(droid.getStatus()) << ", " << droid.getEnergy();
     return (os);
 }
+
 
 
