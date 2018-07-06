@@ -24,8 +24,6 @@ class Carrier
 	void setSpeed(size_t speed);
 
 	Carrier& operator<<(Droid*& droid);
-	//Carrier& operator<<(Carrier& carrier, size_t& other);
-	//Carrier& operator<<(size_t& other);
 	Carrier& operator>>(Droid*& droid);
 	Droid const *&operator[](unsigned int const index);
 	Droid const *operator[](unsigned int const i) const;

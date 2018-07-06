@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include "carrier.hh"
 
-Carrier::Carrier(std::string id) : _id(id), _energy(300), _attack(100), _toughness(90)
+Carrier::Carrier(std::string id) : _id(id), _energy(300), _attack(100), _toughness(90), _speed(0)
 {
     for (int i = 0; i != 5; i++)
     {
@@ -149,4 +149,5 @@ std::ostream& operator<<(std::ostream& os, Carrier const& carrier)
     std::cout << "Speed : " << carrier.getSpeed() << ", Energy " << carrier.getEnergy() << std::endl;
     return os;
 }
+
 
